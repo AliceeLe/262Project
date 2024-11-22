@@ -1,31 +1,63 @@
+import psycopg2
 from common import *
 
-us='''
+# Define your user story
+us = '''
 * Complex US
 
    As a:  Member
  I want:  To view all pinned messages in a specific channel 
-So That:  I can I can view important messages 
+So That:  I can view important messages 
 '''
 
 print(us)
 
-def list_pinned_messages():
+# Define the database connection
+def connect_to_db():
+    try:
+        # Connect to the `project` database
+        conn = psycopg2.connect(
+            dbname="project",
+            user="isdb",         # Replace with your PostgreSQL username
+            password="your_password",  # Replace with your PostgreSQL password
+            host="localhost",    # Or the host of your database
+            port="5432"          # Default PostgreSQL port
+        )
+        conn.autocommit = True  # Optional, set autocommit if needed
+        return conn
+    except Exception as e:
+        print("Error connecting to the database:", e)
+        raise
 
-    cols = 'm.message_id m.message_content c.channel_id u.user_id u.user_name'
+# Define the function to list pinned messages
+def list_pinned_messages(conn):
+    try:
+        cur = conn.cursor()
 
-    tmpl =  f'''
-SELECT {c(cols)}
-  FROM Messages as m
-       JOIN Channel as c ON m.channel_id = c.channel_id
-       JOIN Users as u ON m.user_id = u.user_id
- WHERE m.is_pinned = True 
-'''
-    cmd = cur.mogrify(tmpl, ())
-    print_cmd(cmd)
-    cur.execute(cmd)
-    rows = cur.fetchall()
-    # pp(rows)
-    show_table( rows, cols )
+        cols = 'm.message_id, m.message_content, c.channel_id, u.user_id, u.user_name'
 
-list_pinned_messages()    
+        tmpl = f'''
+        SELECT {cols}
+          FROM Messages as m
+               JOIN Channel as c ON m.channel_id = c.channel_id
+               JOIN Users as u ON m.user_id = u.user_id
+         WHERE m.is_pinned = True 
+        '''
+        cmd = cur.mogrify(tmpl, ())
+        print_cmd(cmd)
+        cur.execute(cmd)
+        rows = cur.fetchall()
+        # pp(rows)
+        show_table( rows, cols )
+
+    except Exception as e:
+        print("Error executing query:", e)
+        raise
+
+# Main program
+if __name__ == "__main__":
+    conn = connect_to_db()
+    try:
+        list_pinned_messages(conn)
+    finally:
+        conn.close()

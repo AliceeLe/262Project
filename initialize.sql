@@ -13,3 +13,7 @@ CREATE database project;
 \copy Users (user_ID, user_name) FROM data/user.csv csv header;
 \copy Channel (channel_id, server_id) FROM data/channel.csv csv header;
 \copy Messages (message_id,message_content,time,is_pinned,user_id,channel_id) FROM data/message.csv csv header;
+
+-- SELECT * FROM Users;
+-- SELECT * FROM Channel;
+SELECT * FROM Messages;

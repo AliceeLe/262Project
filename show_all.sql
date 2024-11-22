@@ -1,4 +1,5 @@
 -- Show all contents of the database tables
+\c project 
 
 \echo =============================
 \echo Displaying contents of the "Users" table:
