@@ -1,9 +1,9 @@
 -- drop the Discord database if it exists
-DROP database if EXISTS Discord;
+DROP database if EXISTS project;
 
 -- create it afresh
-CREATE database Discord;
-\c Discord
+CREATE database project;
+\c project
 
 
 \i create.SQL
