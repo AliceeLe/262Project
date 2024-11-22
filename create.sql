@@ -1,11 +1,11 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2024-11-22 19:30:17.697
+-- Last modification date: 2024-11-22 19:51:57.678
 
 -- tables
 -- Table: Channel
 CREATE TABLE Channel (
     channel_id int  NOT NULL,
-    message_id int  NOT NULL,
+    server_id int  NOT NULL,
     CONSTRAINT channel_id PRIMARY KEY (channel_id)
 );
 
@@ -14,9 +14,9 @@ CREATE TABLE Messages (
     message_id int  NOT NULL,
     message_content text  NOT NULL,
     time timestamp  NOT NULL,
-    is_Pinned boolean  NOT NULL,
-    cid int  NOT NULL,
+    is_pinned boolean  NOT NULL,
     uid int  NOT NULL,
+    cid int  NOT NULL,
     CONSTRAINT Messages_pk PRIMARY KEY (message_id)
 );
 
