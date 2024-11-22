@@ -15,8 +15,8 @@ CREATE TABLE Messages (
     message_content text  NOT NULL,
     time timestamp  NOT NULL,
     is_pinned boolean  NOT NULL,
-    uid int  NOT NULL,
-    cid int  NOT NULL,
+    user_id int  NOT NULL,
+    channel_id int  NOT NULL,
     CONSTRAINT Messages_pk PRIMARY KEY (message_id)
 );
 
@@ -30,7 +30,7 @@ CREATE TABLE Users (
 -- foreign keys
 -- Reference: Channel_Messages (table: Messages)
 ALTER TABLE Messages ADD CONSTRAINT Channel_Messages
-    FOREIGN KEY (cid)
+    FOREIGN KEY (channel_id)
     REFERENCES Channel (channel_id)  
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
@@ -38,7 +38,7 @@ ALTER TABLE Messages ADD CONSTRAINT Channel_Messages
 
 -- Reference: Messages_Users (table: Messages)
 ALTER TABLE Messages ADD CONSTRAINT Messages_Users
-    FOREIGN KEY (uid)
+    FOREIGN KEY (user_id)
     REFERENCES Users (user_ID)  
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
