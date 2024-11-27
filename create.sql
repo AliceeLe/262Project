@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2024-11-27 20:08:18.781
+-- Last modification date: 2024-11-27 20:25:22.684
 
 -- tables
 -- Table: APIDevelopment
@@ -166,6 +166,14 @@ ALTER TABLE Messages ADD CONSTRAINT Messages_Users
 ALTER TABLE Posts ADD CONSTRAINT Posts_Channel
     FOREIGN KEY (channel_id)
     REFERENCES Channel (channel_id)  
+    NOT DEFERRABLE 
+    INITIALLY IMMEDIATE
+;
+
+-- Reference: Servers_Channel (table: Channel)
+ALTER TABLE Channel ADD CONSTRAINT Servers_Channel
+    FOREIGN KEY (server_id)
+    REFERENCES Servers (server_id)  
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
