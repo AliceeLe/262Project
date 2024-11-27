@@ -3,11 +3,11 @@ from common import *
 
 # Define your user story
 us = '''
-* Complex US
+* Simple US
 
    As a:  Member
- I want:  To view all pinned messages in a specific channel 
-So That:  I can view important messages 
+ I want:  To join a server 
+So That:  I can interact with other users 
 '''
 
 print(us)
@@ -30,7 +30,7 @@ def connect_to_db():
         raise
 
 # Define the function to list pinned messages
-def list_pinned_messages(conn):
+def join_server(conn):
     try:
         cur = conn.cursor()
 
@@ -58,6 +58,6 @@ def list_pinned_messages(conn):
 if __name__ == "__main__":
     conn = connect_to_db()
     try:
-        list_pinned_messages(conn)
+        join_server(conn)
     finally:
         conn.close()
