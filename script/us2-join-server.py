@@ -1,63 +1,111 @@
 import psycopg2
-from common import *
 
-# Define your user story
-us = '''
-* Simple US
+# Database connection setup
+conn = psycopg2.connect(
+    dbname="project",
+    user="isdb",
+    password="your_password",
+    host="localhost",
+    port="5432"
+)
+cursor = conn.cursor()
 
-   As a:  Member
- I want:  To join a server 
-So That:  I can interact with other users 
-'''
+# Drop and Create the insert_membership Function
+# Due to foreign key constraint, if user_id or server_id are non-existent, then 
+# the function automatically reject
+create_insert_membership_function = """
+DROP FUNCTION IF EXISTS insert_membership(int, int);
 
-print(us)
+CREATE FUNCTION insert_membership(p_user_id int, p_server_id int) 
+RETURNS void
+LANGUAGE plpgsql AS 
+$$
+BEGIN
+    INSERT INTO Membership(user_id, server_id)
+    VALUES (p_user_id, p_server_id);
+END
+$$;
+"""
 
-# Define the database connection
-def connect_to_db():
+# Function to insert 
+def insert_membership(user_id, server_id, cursor):
     try:
-        # Connect to the `project` database
-        conn = psycopg2.connect(
-            dbname="project",
-            user="isdb",         # Replace with your PostgreSQL username
-            password="your_password",  # Replace with your PostgreSQL password
-            host="localhost",    # Or the host of your database
-            port="5432"          # Default PostgreSQL port
-        )
-        conn.autocommit = True  # Optional, set autocommit if needed
-        return conn
+        call_insert_membership = """
+        SELECT insert_membership(%s, %s);
+        """
+        cursor.execute(call_insert_membership, (user_id, server_id))
+        print(f"Membership inserted: user_id={user_id}, server_id={server_id}")
     except Exception as e:
-        print("Error connecting to the database:", e)
-        raise
+        print(f"Error inserting membership: {e}")
 
-# Define the function to list pinned messages
-def join_server(conn):
-    try:
-        cur = conn.cursor()
+# Helper function to display tables
+select_membership = """
+SELECT * FROM Membership;
+"""
 
-        cols = 'm.message_id, m.message_content, c.channel_id, u.user_id, u.user_name'
+select_server = """
+SELECT * FROM Servers;
+"""
 
-        tmpl = f'''
-        SELECT {cols}
-          FROM Messages as m
-               JOIN Channel as c ON m.channel_id = c.channel_id
-               JOIN Users as u ON m.user_id = u.user_id
-         WHERE m.is_pinned = True 
-        '''
-        cmd = cur.mogrify(tmpl, ())
-        print_cmd(cmd)
-        cur.execute(cmd)
-        rows = cur.fetchall()
-        # pp(rows)
-        show_table( rows, cols )
 
-    except Exception as e:
-        print("Error executing query:", e)
-        raise
+# Create the fn_update_num_member Trigger Function
+create_update_num_member_function = """
+CREATE OR REPLACE FUNCTION fn_update_num_member()
+RETURNS trigger
+LANGUAGE plpgsql AS
+$$
+BEGIN
+    UPDATE Servers
+    SET num_of_member = COALESCE(num_of_member, 0) + 1
+    WHERE server_id = NEW.server_id;
+    RETURN NEW;
+END
+$$;
+"""
 
-# Main program
-if __name__ == "__main__":
-    conn = connect_to_db()
-    try:
-        join_server(conn)
-    finally:
-        conn.close()
+# Create the Trigger
+create_trigger = """
+DROP TRIGGER IF EXISTS update_num_member ON Membership;
+
+CREATE TRIGGER update_num_member
+AFTER INSERT ON Membership
+FOR EACH ROW
+EXECUTE FUNCTION fn_update_num_member();
+"""
+
+try:
+    cursor.execute(create_insert_membership_function)
+    print("Function insert_membership created successfully.")
+
+    # Change param of user_id and server_id here to test  
+    insert_membership(210, 109, cursor)
+    print("Membership inserted successfully.")
+    
+    cursor.execute(select_membership)
+    membership_rows = cursor.fetchall()
+    print("Membership table contents:")
+    for row in membership_rows:
+        print(row)
+
+    cursor.execute(create_update_num_member_function)
+    print("Function fn_update_num_member created successfully.")
+
+    cursor.execute(create_trigger)
+    print("Trigger update_num_member created successfully.")
+
+    cursor.execute(select_server)
+    server_rows = cursor.fetchall()
+    print("Servers table contents:")
+    for row in server_rows:
+        print(row)
+
+    # Commit changes
+    conn.commit()
+
+except Exception as e:
+    print(f"Error: {e}")
+    conn.rollback()
+
+finally:
+    cursor.close()
+    conn.close()
