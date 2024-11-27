@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2024-11-27 20:08:18.781
+-- Last modification date: 2024-11-27 20:25:22.684
 
 -- tables
 -- Table: APIDevelopment
@@ -28,7 +28,6 @@ CREATE TABLE Bots (
 CREATE TABLE Channel (
     channel_id int  NOT NULL,
     server_id int  NOT NULL,
-    post_id int  NOT NULL,
     CONSTRAINT channel_id PRIMARY KEY (channel_id)
 );
 
@@ -82,7 +81,7 @@ CREATE TABLE Permisson (
 CREATE TABLE Posts (
     post_id int  NOT NULL,
     post_content text  NOT NULL,
-    time timestamp  NOT NULL,
+    post_time timestamp  NOT NULL,
     tag text  NOT NULL,
     title text  NOT NULL,
     user_id int  NOT NULL,
@@ -96,8 +95,6 @@ CREATE TABLE Servers (
     tag text  NOT NULL,
     num_of_member int  NOT NULL,
     region text  NOT NULL,
-    Permisson_user_id int  NOT NULL,
-    Permisson_server_id int  NOT NULL,
     CONSTRAINT Servers_pk PRIMARY KEY (server_id)
 );
 
@@ -169,6 +166,14 @@ ALTER TABLE Permisson ADD CONSTRAINT Permisson_Moderator
 ALTER TABLE Posts ADD CONSTRAINT Posts_Channel
     FOREIGN KEY (channel_id)
     REFERENCES Channel (channel_id)  
+    NOT DEFERRABLE 
+    INITIALLY IMMEDIATE
+;
+
+-- Reference: Servers_Channel (table: Channel)
+ALTER TABLE Channel ADD CONSTRAINT Servers_Channel
+    FOREIGN KEY (server_id)
+    REFERENCES Servers (server_id)  
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
