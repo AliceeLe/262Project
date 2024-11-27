@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2024-11-22 19:51:57.678
+-- Last modification date: 2024-11-27 18:50:47.925
 
 -- tables
 -- Table: Channel
@@ -20,11 +20,27 @@ CREATE TABLE Messages (
     CONSTRAINT Messages_pk PRIMARY KEY (message_id)
 );
 
+-- Table: Servers
+CREATE TABLE Servers (
+    server_id int  NOT NULL,
+    tag text  NOT NULL,
+    num_of_member int  NOT NULL,
+    region text  NOT NULL,
+    CONSTRAINT Servers_pk PRIMARY KEY (server_id)
+);
+
 -- Table: Users
 CREATE TABLE Users (
-    user_ID int  NOT NULL,
+    user_id int  NOT NULL,
     user_name text  NOT NULL,
-    CONSTRAINT Users_pk PRIMARY KEY (user_ID)
+    CONSTRAINT Users_pk PRIMARY KEY (user_id)
+);
+
+-- Table: membership
+CREATE TABLE membership (
+    server_id int  NOT NULL,
+    user_id int  NOT NULL,
+    CONSTRAINT membership_pk PRIMARY KEY (server_id,user_id)
 );
 
 -- foreign keys
@@ -39,7 +55,23 @@ ALTER TABLE Messages ADD CONSTRAINT Channel_Messages
 -- Reference: Messages_Users (table: Messages)
 ALTER TABLE Messages ADD CONSTRAINT Messages_Users
     FOREIGN KEY (user_id)
-    REFERENCES Users (user_ID)  
+    REFERENCES Users (user_id)  
+    NOT DEFERRABLE 
+    INITIALLY IMMEDIATE
+;
+
+-- Reference: membership_Servers (table: membership)
+ALTER TABLE membership ADD CONSTRAINT membership_Servers
+    FOREIGN KEY (server_id)
+    REFERENCES Servers (server_id)  
+    NOT DEFERRABLE 
+    INITIALLY IMMEDIATE
+;
+
+-- Reference: membership_Users (table: membership)
+ALTER TABLE membership ADD CONSTRAINT membership_Users
+    FOREIGN KEY (user_id)
+    REFERENCES Users (user_id)  
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
