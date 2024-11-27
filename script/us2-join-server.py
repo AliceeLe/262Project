@@ -10,6 +10,17 @@ conn = psycopg2.connect(
 )
 cursor = conn.cursor()
 
+# Define your user story
+us = '''
+* Simple US
+
+   As a:  Member
+ I want:  To join a server 
+So That:  I can interact with other users  
+'''
+
+print(us)
+
 # Drop and Create the insert_membership Function
 # Due to foreign key constraint, if user_id or server_id are non-existent, then 
 # the function automatically reject

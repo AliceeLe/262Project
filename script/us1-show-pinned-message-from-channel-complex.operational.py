@@ -18,12 +18,12 @@ def connect_to_db():
         # Connect to the `project` database
         conn = psycopg2.connect(
             dbname="project",
-            user="isdb",         # Replace with your PostgreSQL username
-            password="your_password",  # Replace with your PostgreSQL password
-            host="localhost",    # Or the host of your database
-            port="5432"          # Default PostgreSQL port
+            user="isdb",         
+            password="your_password",  
+            host="localhost",    
+            port="5432"          
         )
-        conn.autocommit = True  # Optional, set autocommit if needed
+        conn.autocommit = True  
         return conn
     except Exception as e:
         print("Error connecting to the database:", e)
