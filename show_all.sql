@@ -37,5 +37,13 @@ SELECT * FROM Servers;
 SELECT * FROM Membership;
 
 \echo =============================
+\echo Displaying contents of the "Posts" table:
+\echo =============================
+
+-- Query the Posts table
+SELECT * FROM Posts;
+
+
+\echo =============================
 \echo End of database dump.
 \echo =============================
