@@ -1,0 +1,11 @@
+bot_id,command
+1,"/help"
+2,"/music"
+3,"/CMUCourse"
+4,"/info"
+5,"/play"
+6,"/stop"
+7,"/info"
+8,"/weather"
+9,"/joke"
+10,"/quote"

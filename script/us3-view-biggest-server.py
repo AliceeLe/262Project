@@ -29,7 +29,7 @@ def connect_to_db():
         print("Error connecting to the database:", e)
         raise
 
-# Define the function to list pinned messages
+# Define the function to view biggest server
 def view_biggest_server(conn, region_input):
     try:
         cur = conn.cursor()
