@@ -23,5 +23,19 @@ SELECT * FROM Channel;
 SELECT * FROM Messages;
 
 \echo =============================
+\echo Displaying contents of the "Servers" table:
+\echo =============================
+
+-- Query the Servers table
+SELECT * FROM Servers;
+
+\echo =============================
+\echo Displaying contents of the "Membership" table:
+\echo =============================
+
+-- Query the Membership table
+SELECT * FROM Membership;
+
+\echo =============================
 \echo End of database dump.
 \echo =============================

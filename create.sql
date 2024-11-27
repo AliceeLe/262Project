@@ -37,10 +37,10 @@ CREATE TABLE Users (
 );
 
 -- Table: membership
-CREATE TABLE membership (
+CREATE TABLE Membership (
     server_id int  NOT NULL,
     user_id int  NOT NULL,
-    CONSTRAINT membership_pk PRIMARY KEY (server_id,user_id)
+    CONSTRAINT Membership_pk PRIMARY KEY (server_id,user_id)
 );
 
 -- foreign keys
@@ -60,8 +60,8 @@ ALTER TABLE Messages ADD CONSTRAINT Messages_Users
     INITIALLY IMMEDIATE
 ;
 
--- Reference: membership_Servers (table: membership)
-ALTER TABLE membership ADD CONSTRAINT membership_Servers
+-- Reference: Membership_Servers (table: Membership)
+ALTER TABLE Membership ADD CONSTRAINT Membership_Servers
     FOREIGN KEY (server_id)
     REFERENCES Servers (server_id)  
     NOT DEFERRABLE 
@@ -69,7 +69,7 @@ ALTER TABLE membership ADD CONSTRAINT membership_Servers
 ;
 
 -- Reference: membership_Users (table: membership)
-ALTER TABLE membership ADD CONSTRAINT membership_Users
+ALTER TABLE Membership ADD CONSTRAINT Membership_Users
     FOREIGN KEY (user_id)
     REFERENCES Users (user_id)  
     NOT DEFERRABLE 
