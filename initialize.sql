@@ -18,5 +18,5 @@ CREATE database project;
 \copy Posts (post_id, post_content, post_time, tag, title, user_id, channel_id) FROM data/posts.csv csv header;
 \copy Bots (bots_id,commands) FROM data/bot.csv csv header;
 \copy APIDevelopment (channel_id,bots_id) FROM data/api.csv csv header;
-
-
+\copy Ads (ads_id, ads_name, brand, revenue) FROM data/ads.csv csv header;
+\copy Partnership (server_id, ads_id) FROM data/partnership.csv csv header;

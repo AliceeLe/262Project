@@ -12,8 +12,9 @@ CREATE TABLE APIDevelopment (
 -- Table: Ads
 CREATE TABLE Ads (
     ads_id int  NOT NULL,
+    ads_name text NOT NULL,
+    brand text NOT NULL,
     revenue int  NOT NULL,
-    tag text  NOT NULL,
     CONSTRAINT Ads_pk PRIMARY KEY (ads_id)
 );
 
@@ -64,9 +65,9 @@ CREATE TABLE Moderator (
 
 -- Table: Partnership
 CREATE TABLE Partnership (
-    channel_id int  NOT NULL,
+    server_id int  NOT NULL,
     ads_id int  NOT NULL,
-    CONSTRAINT Partnership_pk PRIMARY KEY (channel_id,ads_id)
+    CONSTRAINT Partnership_pk PRIMARY KEY (server_id,ads_id)
 );
 
 -- Table: Permisson
