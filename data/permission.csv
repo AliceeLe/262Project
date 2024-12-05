@@ -1,0 +1,15 @@
+user_id,server_id,able_customize,able_mute
+201,101,true,false
+202,104,false,true
+205,103,false,true
+205,104,true,true
+208,101,false,true
+208,102,true,false
+209,103,true,true
+210,104,true,true
+213,101,true,false
+213,102,true,true
+216,107,false,true
+217,108,true,false
+220,112,false,true
+220,101,true,false
