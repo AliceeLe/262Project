@@ -50,6 +50,34 @@ SELECT * FROM Membership;
 -- Query the Posts table
 SELECT * FROM Posts;
 
+\echo =============================
+\echo Displaying contents of the "Bots" table:
+\echo =============================
+
+-- Query the Bots table
+SELECT * FROM Bots;
+
+\echo =============================
+\echo Displaying contents of the "APIDevelopment" table:
+\echo =============================
+
+-- Query the APIDevelopment table
+SELECT * FROM APIDevelopment;
+
+\echo =============================
+\echo Displaying contents of the "Ads" table:
+\echo =============================
+
+-- Query the Ads table
+SELECT * FROM Ads;
+
+\echo =============================
+\echo Displaying contents of the "Partnership" table:
+\echo =============================
+
+-- Query the Partnership table
+SELECT * FROM Partnership;
+
 
 \echo =============================
 \echo End of database dump.
