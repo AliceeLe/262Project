@@ -71,6 +71,21 @@ SELECT * FROM Ads;
 -- Query the Partnership table
 SELECT * FROM Partnership;
 
+\echo =============================
+\echo Displaying contents of the "Moderator" table:
+\echo =============================
+
+-- Query the Moderator table
+SELECT * FROM Moderator;
+
+\echo =============================
+\echo Displaying contents of the "Permission" table:
+\echo =============================
+
+-- Query the Permission table
+SELECT * FROM Permission;
+
+
 
 \echo =============================
 \echo End of database dump.
