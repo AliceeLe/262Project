@@ -16,5 +16,7 @@ CREATE database project;
 \copy Membership (user_id, server_id) FROM data/membership.csv csv header;
 \copy Messages (message_id,message_content,time,is_pinned,user_id,channel_id) FROM data/message.csv csv header;
 \copy Posts (post_id, post_content, post_time, tag, title, user_id, channel_id) FROM data/posts.csv csv header;
+\copy Bots (bots_id,commands) FROM data/bot.csv csv header;
+\copy APIDevelopment (channel_id,bots_id) FROM data/api.csv csv header;
 
 

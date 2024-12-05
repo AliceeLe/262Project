@@ -2,6 +2,13 @@
 \c project 
 
 \echo =============================
+\echo Displaying contents of the "APIDevelopment" table:
+\echo =============================
+
+-- Query the APIDevelopment table
+SELECT * FROM APIDevelopment;
+
+\echo =============================
 \echo Displaying contents of the "Users" table:
 \echo =============================
 
