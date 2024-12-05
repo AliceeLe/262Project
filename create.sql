@@ -190,8 +190,8 @@ ALTER TABLE Permisson ADD CONSTRAINT Servers_Permisson
 
 -- Reference: Users_Members (table: Members)
 ALTER TABLE Members ADD CONSTRAINT Users_Members
-    FOREIGN KEY (user_id, user_id)
-    REFERENCES Users (user_id, user_name)  
+    FOREIGN KEY (user_id)
+    REFERENCES Users (user_id)  
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
@@ -199,7 +199,7 @@ ALTER TABLE Members ADD CONSTRAINT Users_Members
 -- Reference: Users_Moderator (table: Moderator)
 ALTER TABLE Moderator ADD CONSTRAINT Users_Moderator
     FOREIGN KEY (user_id)
-    REFERENCES Users (user_name)  
+    REFERENCES Users (user_id)  
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;

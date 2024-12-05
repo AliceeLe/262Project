@@ -11,7 +11,7 @@ CREATE database project;
 -- load the data
 
 \copy Users (user_id, user_name) FROM data/user.csv csv header;
-\copy Servers (server_id, tag, num_of_member, region) FROM data/server.csv csv header;
+\copy Servers (server_id, tag, num_of_member, region, theme) FROM data/server.csv csv header;
 \copy Channel (channel_id, server_id) FROM data/channel.csv csv header;
 \copy Membership (user_id, server_id) FROM data/membership.csv csv header;
 \copy Messages (message_id,message_content,time,is_pinned,user_id,channel_id) FROM data/message.csv csv header;
