@@ -1,17 +1,14 @@
 import psycopg2
 
-# Define your user story
 us = '''
-* Simple US
+* Complex US
 
    As a:  Moderator
  I want:  To customize themes for my server like stickers, audio, etc.
 So That:  I can bring a sense of community to the server
 '''
-
 print(us)
 
-# Database connection setup
 conn = psycopg2.connect(
     dbname="project",
     user="isdb",
@@ -21,39 +18,39 @@ conn = psycopg2.connect(
 )
 cursor = conn.cursor()
 
-# Define the modify_server_theme function
 create_modify_server_theme_function = """
 DROP FUNCTION IF EXISTS modify_server_theme();
 
-CREATE OR REPLACE FUNCTION modify_server_theme(p_server_id INT, p_new_theme TEXT)
+CREATE OR REPLACE FUNCTION modify_server_theme(p_user_id INT, p_server_id INT, p_new_theme TEXT)
 RETURNS void
 LANGUAGE plpgsql AS
 $$
 BEGIN
-    -- Check if the server exists and the theme needs to be updated
-    IF EXISTS (SELECT 1 FROM Servers WHERE server_id = p_server_id AND theme IS NOT NULL AND theme <> '') THEN
+    -- Check if the user has permission to customize the server
+    IF EXISTS (
+        SELECT 1
+        FROM Permission
+        WHERE user_id = p_user_id
+          AND server_id = p_server_id
+          AND able_customize = TRUE
+    ) THEN
         UPDATE Servers
         SET theme = p_new_theme
         WHERE server_id = p_server_id;
-        RAISE NOTICE 'Theme updated for server_id % to %', p_server_id, p_new_theme;
-    ELSE
-        RAISE NOTICE 'Server ID % not eligible for theme update or does not exist', p_server_id;
     END IF;
 END
 $$;
 """
 
-# Execute the function and modify themes
 try:
-    # Create the modify_server_theme function
     cursor.execute(create_modify_server_theme_function)
     print("Function modify_server_theme created successfully.")
 
-    # Call the function with specific inputs
-    server_id = 106  
-    new_theme = 'Fantasy World'  
-    cursor.execute("SELECT modify_server_theme(%s, %s);", (server_id, new_theme))
-    print(f"Theme updated for server_id={server_id} to '{new_theme}'.")
+    user_id = 205  
+    server_id = 104  
+    new_theme = 'Elegant Design'  
+    cursor.execute("SELECT modify_server_theme(%s, %s, %s);", (user_id, server_id, new_theme))
+    print(f"Attempted to update theme for server_id={server_id} by user_id={user_id} to '{new_theme}'.")
 
     cursor.execute("SELECT * FROM Servers;")
     rows = cursor.fetchall()

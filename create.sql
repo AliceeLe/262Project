@@ -12,8 +12,9 @@ CREATE TABLE APIDevelopment (
 -- Table: Ads
 CREATE TABLE Ads (
     ads_id int  NOT NULL,
+    ads_name text NOT NULL,
+    brand text NOT NULL,
     revenue int  NOT NULL,
-    tag text  NOT NULL,
     CONSTRAINT Ads_pk PRIMARY KEY (ads_id)
 );
 
@@ -34,7 +35,6 @@ CREATE TABLE Channel (
 -- Table: Members
 CREATE TABLE Members (
     user_id int  NOT NULL,
-    is_muted boolean  NOT NULL,
     CONSTRAINT Members_pk PRIMARY KEY (user_id)
 );
 
@@ -42,6 +42,7 @@ CREATE TABLE Members (
 CREATE TABLE Membership (
     server_id int  NOT NULL,
     user_id int  NOT NULL,
+    is_muted boolean  NOT NULL,
     CONSTRAINT Membership_pk PRIMARY KEY (server_id,user_id)
 );
 
@@ -64,18 +65,18 @@ CREATE TABLE Moderator (
 
 -- Table: Partnership
 CREATE TABLE Partnership (
-    channel_id int  NOT NULL,
+    server_id int  NOT NULL,
     ads_id int  NOT NULL,
-    CONSTRAINT Partnership_pk PRIMARY KEY (channel_id,ads_id)
+    CONSTRAINT Partnership_pk PRIMARY KEY (server_id,ads_id)
 );
 
--- Table: Permisson
-CREATE TABLE Permisson (
+-- Table: Permission
+CREATE TABLE Permission (
     user_id int  NOT NULL,
     server_id int  NOT NULL,
     able_customize boolean  NOT NULL,
     able_mute boolean  NOT NULL,
-    CONSTRAINT Permisson_pk PRIMARY KEY (user_id,server_id)
+    CONSTRAINT Permission_pk PRIMARY KEY (user_id,server_id)
 );
 
 -- Table: Posts
@@ -156,8 +157,8 @@ ALTER TABLE Partnership ADD CONSTRAINT Partnership_Channel
     INITIALLY IMMEDIATE
 ;
 
--- Reference: Permisson_Moderator (table: Permisson)
-ALTER TABLE Permisson ADD CONSTRAINT Permisson_Moderator
+-- Reference: Permission_Moderator (table: Permission)
+ALTER TABLE Permission ADD CONSTRAINT Permission_Moderator
     FOREIGN KEY (user_id)
     REFERENCES Moderator (user_id)  
     NOT DEFERRABLE 
@@ -180,8 +181,8 @@ ALTER TABLE Channel ADD CONSTRAINT Servers_Channel
     INITIALLY IMMEDIATE
 ;
 
--- Reference: Servers_Permisson (table: Permisson)
-ALTER TABLE Permisson ADD CONSTRAINT Servers_Permisson
+-- Reference: Servers_Permission (table: Permission)
+ALTER TABLE Permission ADD CONSTRAINT Servers_Permission
     FOREIGN KEY (server_id)
     REFERENCES Servers (server_id)  
     NOT DEFERRABLE 
