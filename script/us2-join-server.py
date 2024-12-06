@@ -25,27 +25,27 @@ print(us)
 # Due to foreign key constraint, if user_id or server_id are non-existent, then 
 # the function automatically reject
 create_insert_membership_function = """
-DROP FUNCTION IF EXISTS insert_membership(int, int);
+DROP FUNCTION IF EXISTS insert_membership(int, int, boolean);
 
-CREATE FUNCTION insert_membership(p_user_id int, p_server_id int) 
+CREATE FUNCTION insert_membership(p_user_id int, p_server_id int, p_is_muted boolean) 
 RETURNS void
 LANGUAGE plpgsql AS 
 $$
 BEGIN
-    INSERT INTO Membership(user_id, server_id)
-    VALUES (p_user_id, p_server_id);
+    INSERT INTO Membership(user_id, server_id, is_muted)
+    VALUES (p_user_id, p_server_id, p_is_muted);
 END
 $$;
 """
 
 # Function to insert 
-def insert_membership(user_id, server_id, cursor):
+def insert_membership(user_id, server_id, is_muted, cursor):
     try:
         call_insert_membership = """
-        SELECT insert_membership(%s, %s);
+        SELECT insert_membership(%s, %s, %s);
         """
-        cursor.execute(call_insert_membership, (user_id, server_id))
-        print(f"Membership inserted: user_id={user_id}, server_id={server_id}")
+        cursor.execute(call_insert_membership, (user_id, server_id, is_muted))
+        print(f"Membership inserted: user_id={user_id}, server_id={server_id}, is_muted={is_muted}")
     except Exception as e:
         print(f"Error inserting membership: {e}")
 
@@ -89,7 +89,7 @@ try:
     print("Function insert_membership created successfully.")
 
     # Change param of user_id and server_id here to test  
-    insert_membership(210, 109, cursor)
+    insert_membership(210, 109, False, cursor)
     print("Membership inserted successfully.")
     
     cursor.execute(select_membership)
