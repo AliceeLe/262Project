@@ -96,7 +96,7 @@ try:
     cursor.execute(select_membership)
     membership_rows = cursor.fetchall()
     print("Membership table contents:")
-    membership_cols = 'user_id server_id is_muted'
+    membership_cols = 'server_id user_id is_muted'
     show_table( membership_rows, membership_cols )
 
     cursor.execute(create_update_num_member_function)
