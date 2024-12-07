@@ -2,7 +2,7 @@ import psycopg2
 from common import *
 
 us = '''
-* Complex, Operational US
+* US8: Complex, Operational US
 
    As a:  Moderator
  I want:  To customize themes for my server like stickers, audio, etc.

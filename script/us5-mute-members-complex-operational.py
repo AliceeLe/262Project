@@ -3,7 +3,7 @@ from common import *
 
 # Define your user story
 us = '''
-* Complex, Operational US
+* US5: Complex, Operational US
 
    As a:  Moderator
  I want:  To mute members in specific channel 

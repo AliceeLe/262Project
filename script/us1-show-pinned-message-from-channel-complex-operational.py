@@ -3,11 +3,11 @@ from common import *
 
 # Define your user story
 us = '''
-* Simple, Analytical US
+* US1: Complex, Operational US
 
-   As a:  Moderator
- I want:  To track bot usage in my channel
-So That:  I can identify which bots are most frequently used for the channel
+   As a:  Member
+ I want:  To view all pinned messages in a specific channel 
+So That:  I can view important messages 
 '''
 
 print(us)
@@ -29,21 +29,20 @@ def connect_to_db():
         print("Error connecting to the database:", e)
         raise
 
-# Define the function to view biggest servers
-def track_bot_server(conn):
+# Define the function to list pinned messages
+def list_pinned_messages(conn):
     try:
         cur = conn.cursor()
 
-        cols = 'channel_id, bot_usage_count'
+        cols = 'm.message_id, m.message_content, c.channel_id, u.user_id, u.user_name'
 
         tmpl = f'''
-        SELECT 
-            channel_id, COUNT(bots_id)
-        FROM APIDevelopment
-        GROUP BY channel_id
-        ORDER BY channel_id;
+        SELECT {cols}
+          FROM Messages as m
+               JOIN Channel as c ON m.channel_id = c.channel_id
+               JOIN Users as u ON m.user_id = u.user_id
+         WHERE m.is_pinned = True 
         '''
-
         cmd = cur.mogrify(tmpl, ())
         print_cmd(cmd)
         cur.execute(cmd)
@@ -55,9 +54,10 @@ def track_bot_server(conn):
         print("Error executing query:", e)
         raise
 
+# Main program
 if __name__ == "__main__":
     conn = connect_to_db()
     try:
-        track_bot_server(conn)
+        list_pinned_messages(conn)
     finally:
         conn.close()

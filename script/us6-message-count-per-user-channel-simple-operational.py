@@ -3,11 +3,11 @@ from common import *
 
 # Define your user story
 us = '''
-* Simple, Analytical US
+* US6: Simple, Operational US
 
-   As a:  Member
- I want:  To view the biggest server in my region 
-So That:  I can discover active communities nearby 
+   As a:  Moderator
+ I want:  To retrieve message counts per user in a specific channel 
+So That:  I can identify the most active contributors 
 '''
 
 print(us)
@@ -29,26 +29,31 @@ def connect_to_db():
         print("Error connecting to the database:", e)
         raise
 
-# Define the function to view biggest servers
-def view_biggest_server(conn, region_input):
+# Define the function to retrieve message count
+def retrieve_message_count(conn, channel_id_input):
     try:
         cur = conn.cursor()
 
-        cols = 'server_id tag num_of_member region'
+        cols = 'message_id, message_content, user_id, channel_id, post_count'
 
         tmpl = f'''
-        SELECT server_id, tag, num_of_member, region
-        FROM Servers
-        WHERE region = %s AND num_of_member = (SELECT MAX(num_of_member) 
-                                               FROM Servers 
-                                               WHERE region = %s)
+        SELECT 
+            message_id, 
+            message_content, 
+            user_id, 
+            channel_id,
+            COUNT(message_id) OVER (PARTITION BY user_id, channel_id) AS post_count
+        FROM Messages
+        WHERE channel_id = %s;
         '''
 
-        cmd = cur.mogrify(tmpl, (region_input, region_input))
+        cmd = cur.mogrify(tmpl, (channel_id_input,))
         print_cmd(cmd)
-        cur.execute(tmpl, (region_input, region_input))
+        cur.execute(tmpl, (channel_id_input,))
         rows = cur.fetchall()
-        show_table( rows, cols )
+
+        # Display the results
+        show_table(rows, cols)
 
     except Exception as e:
         print("Error executing query:", e)
@@ -57,6 +62,6 @@ def view_biggest_server(conn, region_input):
 if __name__ == "__main__":
     conn = connect_to_db()
     try:
-        view_biggest_server(conn, "China")
+        retrieve_message_count(conn, 3)
     finally:
         conn.close()

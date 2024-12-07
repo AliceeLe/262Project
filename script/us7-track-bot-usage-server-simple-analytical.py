@@ -3,11 +3,11 @@ from common import *
 
 # Define your user story
 us = '''
-* Simple, Analytical US
+* US7: Simple, Analytical US
 
-   As a:  Member
- I want:  To view the most recent post with specific tags 
-So That:  I can find posts relevant to the topic I’m looking for 
+   As a:  Moderator
+ I want:  To track bot usage in my channel
+So That:  I can identify which bots are most frequently used for the channel
 '''
 
 print(us)
@@ -29,25 +29,26 @@ def connect_to_db():
         print("Error connecting to the database:", e)
         raise
 
-# Define the function to list pinned messages
-def view_recent_post_with_tag(conn, tag_input):
+# Define the function to view biggest servers
+def track_bot_server(conn):
     try:
         cur = conn.cursor()
 
-        cols = 'post_id, post_content, post_time, tag, title, user_id, channel_id'
+        cols = 'channel_id, bot_usage_count'
 
         tmpl = f'''
-        SELECT post_id,post_content,post_time,tag,title,user_id,channel_id
-        FROM Posts
-        WHERE tag = %s AND post_time = (SELECT MAX(post_time) 
-                                               FROM Posts 
-                                               WHERE tag = %s)
+        SELECT 
+            channel_id, COUNT(bots_id)
+        FROM APIDevelopment
+        GROUP BY channel_id
+        ORDER BY channel_id;
         '''
 
-        cmd = cur.mogrify(tmpl, (tag_input, tag_input))
+        cmd = cur.mogrify(tmpl, ())
         print_cmd(cmd)
-        cur.execute(tmpl, (tag_input, tag_input))
+        cur.execute(cmd)
         rows = cur.fetchall()
+        # pp(rows)
         show_table( rows, cols )
 
     except Exception as e:
@@ -57,6 +58,6 @@ def view_recent_post_with_tag(conn, tag_input):
 if __name__ == "__main__":
     conn = connect_to_db()
     try:
-        view_recent_post_with_tag(conn, "general")
+        track_bot_server(conn)
     finally:
         conn.close()

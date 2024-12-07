@@ -3,7 +3,7 @@ from common import *
 
 # Define your user story
 us = '''
-* Complex, Operational US
+* US10: Complex, Operational US
 
    As a:  Discord data analytics
  I want:  To cater ads to users based on servers they are in

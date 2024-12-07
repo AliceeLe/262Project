@@ -3,11 +3,11 @@ from common import *
 
 # Define your user story
 us = '''
-* Complex, Operational US
+* US4: Simple, Analytical US
 
    As a:  Member
- I want:  To view all pinned messages in a specific channel 
-So That:  I can view important messages 
+ I want:  To view the most recent post with specific tags 
+So That:  I can find posts relevant to the topic I’m looking for 
 '''
 
 print(us)
@@ -30,34 +30,33 @@ def connect_to_db():
         raise
 
 # Define the function to list pinned messages
-def list_pinned_messages(conn):
+def view_recent_post_with_tag(conn, tag_input):
     try:
         cur = conn.cursor()
 
-        cols = 'm.message_id, m.message_content, c.channel_id, u.user_id, u.user_name'
+        cols = 'post_id, post_content, post_time, tag, title, user_id, channel_id'
 
         tmpl = f'''
-        SELECT {cols}
-          FROM Messages as m
-               JOIN Channel as c ON m.channel_id = c.channel_id
-               JOIN Users as u ON m.user_id = u.user_id
-         WHERE m.is_pinned = True 
+        SELECT post_id,post_content,post_time,tag,title,user_id,channel_id
+        FROM Posts
+        WHERE tag = %s AND post_time = (SELECT MAX(post_time) 
+                                               FROM Posts 
+                                               WHERE tag = %s)
         '''
-        cmd = cur.mogrify(tmpl, ())
+
+        cmd = cur.mogrify(tmpl, (tag_input, tag_input))
         print_cmd(cmd)
-        cur.execute(cmd)
+        cur.execute(tmpl, (tag_input, tag_input))
         rows = cur.fetchall()
-        # pp(rows)
         show_table( rows, cols )
 
     except Exception as e:
         print("Error executing query:", e)
         raise
 
-# Main program
 if __name__ == "__main__":
     conn = connect_to_db()
     try:
-        list_pinned_messages(conn)
+        view_recent_post_with_tag(conn, "general")
     finally:
         conn.close()
