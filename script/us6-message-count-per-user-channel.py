@@ -48,6 +48,7 @@ def retrieve_message_count(conn, channel_id_input):
         '''
 
         cmd = cur.mogrify(tmpl, (channel_id_input,))
+        print_cmd(cmd)
         cur.execute(tmpl, (channel_id_input,))
         rows = cur.fetchall()
 

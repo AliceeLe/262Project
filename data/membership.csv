@@ -2,7 +2,7 @@ user_id,server_id,is_muted
 201,101,true
 201,102,true
 201,103,false
-202,104,true
+202,104,false
 202,105,false
 203,106,true
 203,107,false
@@ -31,7 +31,7 @@ user_id,server_id,is_muted
 213,101,false
 213,102,true
 214,103,false
-215,104,true
+215,104,false
 215,105,true
 216,106,false
 216,107,true

@@ -45,6 +45,7 @@ def view_recent_post_with_tag(conn, tag_input):
         '''
 
         cmd = cur.mogrify(tmpl, (tag_input, tag_input))
+        print_cmd(cmd)
         cur.execute(tmpl, (tag_input, tag_input))
         rows = cur.fetchall()
         show_table( rows, cols )

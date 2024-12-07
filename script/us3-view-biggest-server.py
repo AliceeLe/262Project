@@ -45,6 +45,7 @@ def view_biggest_server(conn, region_input):
         '''
 
         cmd = cur.mogrify(tmpl, (region_input, region_input))
+        print_cmd(cmd)
         cur.execute(tmpl, (region_input, region_input))
         rows = cur.fetchall()
         show_table( rows, cols )

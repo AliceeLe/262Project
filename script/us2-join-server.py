@@ -1,4 +1,5 @@
 import psycopg2
+from common import *
 
 # Database connection setup
 conn = psycopg2.connect(
@@ -89,14 +90,14 @@ try:
     print("Function insert_membership created successfully.")
 
     # Change param of user_id and server_id here to test  
-    insert_membership(210, 109, False, cursor)
+    insert_membership(205, 109, False, cursor)
     print("Membership inserted successfully.")
     
     cursor.execute(select_membership)
     membership_rows = cursor.fetchall()
     print("Membership table contents:")
-    for row in membership_rows:
-        print(row)
+    membership_cols = 'user_id server_id is_muted'
+    show_table( membership_rows, membership_cols )
 
     cursor.execute(create_update_num_member_function)
     print("Function fn_update_num_member created successfully.")
@@ -107,8 +108,8 @@ try:
     cursor.execute(select_server)
     server_rows = cursor.fetchall()
     print("Servers table contents:")
-    for row in server_rows:
-        print(row)
+    server_cols = 'server_id tag num_of_member region theme'
+    show_table( server_rows, server_cols )
 
     # Commit changes
     conn.commit()

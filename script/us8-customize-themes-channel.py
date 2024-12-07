@@ -1,4 +1,5 @@
 import psycopg2
+from common import *
 
 us = '''
 * Complex US
@@ -45,6 +46,7 @@ $$;
 try:
     cursor.execute(create_modify_server_theme_function)
     print("Function modify_server_theme created successfully.")
+    print(create_modify_server_theme_function)
 
     user_id = 205  
     server_id = 104  
@@ -55,8 +57,8 @@ try:
     cursor.execute("SELECT * FROM Servers;")
     rows = cursor.fetchall()
     print("Updated Servers table:")
-    for row in rows:
-        print(row)
+    cols = 'server_id tag num_of_member region theme'
+    show_table( rows, cols )
 
     conn.commit()
 

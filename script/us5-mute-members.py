@@ -1,4 +1,16 @@
 import psycopg2
+from common import *
+
+# Define your user story
+us = '''
+* Complex US
+
+   As a:  Moderator
+ I want:  To mute members in specific channel 
+So That:  I can maintain order on the server  
+'''
+
+print(us)
 
 # Database connection setup
 conn = psycopg2.connect(
@@ -44,7 +56,7 @@ BEGIN
     -- Check if moderator has the ability to mute
     IF NOT EXISTS (
         SELECT 1
-        FROM Permisson
+        FROM Permission
         WHERE user_id = p_moderator_id AND server_id = p_server_id AND able_mute = TRUE
     ) THEN
         RETURN 'Moderator does not have mute permission.';
@@ -64,10 +76,11 @@ try:
     # Create the mute_user function
     cursor.execute(create_mute_user_function)
     print("Function mute_user created successfully.")
+    print(create_mute_user_function)
 
     # Call the function with specific inputs
     moderator_id = 205
-    member_id = 103
+    member_id = 202
     server_id = 104
 
     cursor.execute("SELECT mute_user(%s, %s, %s);", (moderator_id, member_id, server_id))
@@ -77,9 +90,10 @@ try:
     # Query and display the updated Membership table
     cursor.execute("SELECT * FROM Membership WHERE server_id = %s;", (server_id,))
     rows = cursor.fetchall()
+    print()
     print("Updated Membership table:")
-    for row in rows:
-        print(row)
+    cols = 'server_id user_id is_muted'
+    show_table( rows, cols )
 
     conn.commit()
 
