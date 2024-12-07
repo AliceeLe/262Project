@@ -3,7 +3,7 @@ from common import *
 
 # Define your user story
 us = '''
-* Complex US
+* Complex, Operational US
 
    As a:  Member
  I want:  To view all pinned messages in a specific channel 

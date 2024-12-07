@@ -3,7 +3,7 @@ from common import *
 
 # Define your user story
 us = '''
-* Simple US
+* Simple, Operational US
 
    As a:  Moderator
  I want:  To retrieve message counts per user in a specific channel 

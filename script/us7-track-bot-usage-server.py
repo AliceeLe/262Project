@@ -3,7 +3,7 @@ from common import *
 
 # Define your user story
 us = '''
-* Simple US
+* Simple, Analytical US
 
    As a:  Moderator
  I want:  To track bot usage in my channel

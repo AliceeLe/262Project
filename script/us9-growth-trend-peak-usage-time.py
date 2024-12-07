@@ -3,7 +3,7 @@ from common import *
 
 # Define your user story
 us = '''
-* Complex US
+* Complex, Analytical US
 
    As a:  Discord data analytics
  I want:  To see the peak usage time for Discord

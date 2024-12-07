@@ -13,7 +13,7 @@ cursor = conn.cursor()
 
 # Define your user story
 us = '''
-* Simple US
+* Complex, Operational US
 
    As a:  Member
  I want:  To join a server 

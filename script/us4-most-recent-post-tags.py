@@ -3,7 +3,7 @@ from common import *
 
 # Define your user story
 us = '''
-* Simple US
+* Simple, Analytical US
 
    As a:  Member
  I want:  To view the most recent post with specific tags 

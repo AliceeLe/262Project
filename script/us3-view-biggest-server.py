@@ -3,7 +3,7 @@ from common import *
 
 # Define your user story
 us = '''
-* Simple US
+* Simple, Analytical US
 
    As a:  Member
  I want:  To view the biggest server in my region 
@@ -34,7 +34,7 @@ def view_biggest_server(conn, region_input):
     try:
         cur = conn.cursor()
 
-        cols = 'server_id, tag, num_of_member, region'
+        cols = 'server_id tag num_of_member region'
 
         tmpl = f'''
         SELECT server_id, tag, num_of_member, region
